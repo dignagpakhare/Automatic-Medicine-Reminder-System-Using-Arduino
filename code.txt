@@ -1,0 +1,78 @@
+
+#include <DS3231.h>
+DS3231 rtc(SDA, SCL);
+Time t;
+#include<LiquidCrystal.h>
+LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
+void setup() {
+  rtc.begin();
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  pinMode(A0, OUTPUT); 
+  digitalWrite(A0, LOW);
+  pinMode(A1, OUTPUT); 
+  digitalWrite(A1, LOW); 
+  pinMode(A2, OUTPUT); 
+  digitalWrite(A2, LOW); 
+  pinMode(A3, OUTPUT); 
+  digitalWrite(A3, LOW);  
+  pinMode(13, INPUT_PULLUP); 
+}
+
+void loop() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Time:   ");
+  lcd.print(rtc.getTimeStr());
+  lcd.setCursor(0, 1);
+  lcd.print("Have a Nice Day ");
+  t = rtc.getTime();
+  if ((t.hour == 9) && (t.min == 5) && (t.sec == 0))
+  {
+    lcd.setCursor(0, 1);
+    lcd.print("DOLO-650 2 PILLS");
+    while(digitalRead(13)==HIGH)
+    {
+      //digitalWrite(8, LOW);
+      digitalWrite(A0,HIGH);
+      digitalWrite(A1,HIGH);
+      delay(200);
+      digitalWrite(A0,LOW);
+      digitalWrite(A1,LOW);
+      delay(200);
+    }
+   // digitalWrite(8, HIGH);
+  }
+  if ((t.hour == 9) && (t.min == 7) && (t.sec == 0))
+  {
+    lcd.setCursor(0, 1);
+    lcd.print("IBUPROFIN 1 PILL");
+    while(digitalRead(13)==HIGH)
+    {
+     // digitalWrite(9, LOW);
+      digitalWrite(A0,HIGH);
+      digitalWrite(A2,HIGH);
+      delay(200);
+      digitalWrite(A0,LOW);
+      digitalWrite(A2,LOW);
+      delay(200);
+    }
+   // digitalWrite(9, HIGH);
+  }
+  if ((t.hour == 18) && (t.min == 37) && (t.sec == 0))
+  {
+    lcd.setCursor(0, 1);
+    lcd.print("DISPRIN 2 PILLS ");
+    while(digitalRead(13)==HIGH)
+    {
+      digitalWrite(A0,HIGH);
+      digitalWrite(A3,HIGH);
+      delay(200);
+      digitalWrite(A0,LOW);
+      digitalWrite(A3,LOW);
+      delay(200);
+    }
+  }
+  delay(1000);
+}
+
